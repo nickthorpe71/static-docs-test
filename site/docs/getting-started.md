@@ -3,7 +3,7 @@ title: Getting Started
 slug: /
 ---
 
-## Step 1: Generate a new Docusaurus site
+## Step 11: Generate a new Docusaurus site
 
 If you haven't already, generate a new Docusaurus site using the classic template:
 
