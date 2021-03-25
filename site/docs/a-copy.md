@@ -1,8 +1,9 @@
 ---
-title: Thank you!
+title: A Copy
 ---
+THIS IS THE COPY
 
-Congratulations on making it this far!
+Congratulations on making it this far! ANOTHER TEST
 
 You have learned the **basics of Docusaurus** and made some changes to the **initial template**.
 

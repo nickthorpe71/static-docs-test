@@ -1,4 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
+
+const path = require('path');
+
 module.exports = {
     title: 'My Site',
     tagline: 'The tagline of my site',
@@ -18,63 +21,12 @@ module.exports = {
             },
             items: [
                 {
-                    to: 'docs/',
+                    to: 'docs/test',
                     activeBasePath: 'docs',
                     label: 'Docs',
                     position: 'left',
-                },
-                { to: 'blog', label: 'Blog', position: 'left' },
-                {
-                    href: 'https://github.com/facebook/docusaurus',
-                    label: 'GitHub',
-                    position: 'right',
-                },
+                }
             ],
-        },
-        footer: {
-            style: 'dark',
-            links: [
-                {
-                    title: 'Docs',
-                    items: [
-                        {
-                            label: 'Getting Started',
-                            to: 'docs/',
-                        },
-                    ],
-                },
-                {
-                    title: 'Community',
-                    items: [
-                        {
-                            label: 'Stack Overflow',
-                            href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-                        },
-                        {
-                            label: 'Discord',
-                            href: 'https://discordapp.com/invite/docusaurus',
-                        },
-                        {
-                            label: 'Twitter',
-                            href: 'https://twitter.com/docusaurus',
-                        },
-                    ],
-                },
-                {
-                    title: 'More',
-                    items: [
-                        {
-                            label: 'Blog',
-                            to: 'blog',
-                        },
-                        {
-                            label: 'GitHub',
-                            href: 'https://github.com/facebook/docusaurus',
-                        },
-                    ],
-                },
-            ],
-            copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
         },
     },
     presets: [
@@ -82,16 +34,9 @@ module.exports = {
             '@docusaurus/preset-classic',
             {
                 docs: {
-                    sidebarPath: require.resolve('./sidebars.js'),
-                    // Please change this to your repo.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/edit/master/website/',
-                },
-                blog: {
-                    showReadingTime: true,
-                    // Please change this to your repo.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+                    path: 'docs',
+                    routeBasePath: 'docs',
+                    sidebarPath: require.resolve('./sidebars.auto.js'),
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -100,13 +45,12 @@ module.exports = {
         ],
     ],
     plugins: [
-        [
-            "docusaurus-plugin-remote-content",
-            {
-                docsIntegration: true,
-                sourceBaseUrl: 'https://raw.githubusercontent.com/nickthorpe71/static-site-content-test/master/docs/',
-                documents: ["test"]
-            },
-        ],
+        // [
+        //     path.resolve(__dirname, 'winged-seed'),
+        //     {
+        //         sourceUrl: 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/',
+        //         sidebarPath: 'sidebars.auto.js'
+        //     }
+        // ]
     ],
 };
