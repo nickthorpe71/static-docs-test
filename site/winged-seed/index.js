@@ -18,27 +18,26 @@ module.exports = (context, options) => {
         sourceUrl = `${sourceUrl}/`;
 
     /**
-     * Retrives a list of file names from specified repo
+     * Retrieves a list of file names from specified repo
+     * Then triggers local file generation and sidebar generation
      */
-    const getFileNames = async (sourceBaseUrl) => {
-        console.log('get names');
-        const repoData = await axios.get(sourceBaseUrl);
+    const pullFromRepo = async () => {
+        const repoData = await axios.get(sourceUrl);
 
         const fileNamesFromRepo = repoData.data.values.map(value => value.path);
         const filenamesNoExtension = fileNamesFromRepo.map(fileName => fileName.split('.')[0]);
-        const splitUrl = sourceBaseUrl.split('/');
+        const splitUrl = sourceUrl.split('/');
 
         // index 6 is the company name from a bitbucket api url
         // index 7 is the repo name from a bitbucket api url
-        await generateUrlsForTargetFiles(fileNamesFromRepo, splitUrl[6], splitUrl[7]);
-        await generateSidebarFile(context.siteDir, sidebarPath, filenamesNoExtension);
+        await generateDocsFiles(fileNamesFromRepo, splitUrl[6], splitUrl[7]);
+        await generateSidebarFile(filenamesNoExtension);
     };
 
     /**
      * Pulls all files from repo and writes them to docs folder
      */
-    const generateUrlsForTargetFiles = async (fileNames, company, repo) => {
-        console.log('gen files');
+    const generateDocsFiles = async (fileNames, company, repo) => {
         for (let i = 0; i < fileNames.length; i++) {
             const path = join(context.siteDir, 'docs', fileNames[i]);
             const fetchContentResponse = await axios.get(`https://bitbucket.org/${company}/${repo}/raw/HEAD/${fileNames[i]}`);
@@ -50,8 +49,7 @@ module.exports = (context, options) => {
     /**
      * Creates a sidebar file that contains all sitebarItems passed in
      */
-    const generateSidebarFile = async (siteDir, sidebarPath, sidebarItems) => {
-        console.log('get sidebar');
+    const generateSidebarFile = async (sidebarItems) => {
         const sidebarFileContents =
             `
         module.exports = {
@@ -60,7 +58,7 @@ module.exports = (context, options) => {
         };
         `;
 
-        const fullSidebarPath = join(siteDir, sidebarPath);
+        const fullSidebarPath = join(context.siteDir, sidebarPath);
 
         writeFileSync(fullSidebarPath, sidebarFileContents, "utf8");
     };
@@ -69,8 +67,7 @@ module.exports = (context, options) => {
         name: 'docusaurus-plugin-winged-seed',
 
         async loadContent() {
-            console.log('load');
-            return await getFileNames(sourceUrl);
+            return await pullFromRepo(sourceUrl);
         }
     };
 };
