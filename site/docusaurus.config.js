@@ -44,13 +44,13 @@ module.exports = {
             },
         ],
     ],
-    plugins: [
-        [
-            path.resolve(__dirname, 'winged-seed'),
-            {
-                sourceUrl: 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/',
-                sidebarPath: 'sidebars.auto.js'
-            }
-        ]
-    ],
+    // plugins: [
+    //     [
+    //         path.resolve(__dirname, 'winged-seed'),
+    //         {
+    //             sourceUrl: 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/',
+    //             sidebarPath: 'sidebars.auto.js'
+    //         }
+    //     ]
+    // ],
 };

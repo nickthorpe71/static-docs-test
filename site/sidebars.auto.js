@@ -1,7 +1,4 @@
-
-        module.exports = {
-            docs: 
-            [
+module.exports = {docs: [
     "a-copy-2",
     "a-copy",
     "test-4",
@@ -10,6 +7,4 @@
     "test-7",
     "test-8",
     "test"
-]
-        };
-        
+]};

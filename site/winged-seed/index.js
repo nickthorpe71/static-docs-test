@@ -24,6 +24,8 @@ module.exports = (context, options) => {
     const pullFromRepo = async () => {
         const repoData = await axios.get(sourceUrl);
 
+        console.log(repoData);
+
         const fileNamesFromRepo = repoData.data.values.map(value => value.path);
         const filenamesNoExtension = fileNamesFromRepo.map(fileName => fileName.split('.')[0]);
         const splitUrl = sourceUrl.split('/');
@@ -38,6 +40,7 @@ module.exports = (context, options) => {
      * Pulls all files from repo and writes them to docs folder
      */
     const generateDocsFiles = async (fileNames, company, repo) => {
+        console.log(context.siteDir);
         for (let i = 0; i < fileNames.length; i++) {
             const path = join(context.siteDir, 'docs', fileNames[i]);
             const fetchContentResponse = await axios.get(`https://bitbucket.org/${company}/${repo}/raw/HEAD/${fileNames[i]}`);
@@ -67,7 +70,7 @@ module.exports = (context, options) => {
         name: 'docusaurus-plugin-winged-seed',
 
         async loadContent() {
-            return await pullFromRepo(sourceUrl);
+            return await pullFromRepo();
         }
     };
 };
