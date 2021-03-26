@@ -1,7 +1,9 @@
 
-module.exports = {
-    docs: [
-        "a-copy",
-        "test"
-    ]
-};
+        module.exports = {
+            docs: 
+            [
+    "a-copy",
+    "test"
+]
+          };
+        

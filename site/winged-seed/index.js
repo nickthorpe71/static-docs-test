@@ -23,47 +23,26 @@ module.exports = (context, options) => {
 
         const fileNamesFromRepo = repoData.data.values.map(value => value.path);
         const filenamesNoExtension = fileNamesFromRepo.map(fileName => fileName.split('.')[0]);
-        const urlDataExtract = getCompanyAndRepoFromUrl(sourceBaseUrl);
+        const splitUrl = sourceBaseUrl.split('/');
 
-        generateUrlsForTargetFiles(fileNamesFromRepo, urlDataExtract.company, urlDataExtract.repo);
+        // index 6 is the company name from a bitbucket api url
+        // index 7 is the repo name from a bitbucket api url
+        generateUrlsForTargetFiles(fileNamesFromRepo, splitUrl[6], splitUrl[7]);
         generateSidebarFile(context.siteDir, sidebarPath, filenamesNoExtension);
     };
 
     // create files locally
     const generateUrlsForTargetFiles = (fileNames, company, repo) => {
-        const contentDataObjects = [];
-        fileNames.forEach(fileName => {
-            if (fileName.endsWith('md') || fileName.endsWith('mdx')) {
-                contentDataObjects.push({
-                    url: `https://bitbucket.org/${company}/${repo}/raw/HEAD/${fileName}`,
-                    identifier: fileName
-                });
-            }
+
+        fileNames.forEach(async fileName => {
+            if (!fileName.endsWith('md') && !fileName.endsWith('mdx'))
+                return;
+
+            const path = join(context.siteDir, 'docs', fileName);
+            const fetchContentResponse = await axios.get(`https://bitbucket.org/${company}/${repo}/raw/HEAD/${fileName}`);
+
+            writeFileSync(path, fetchContentResponse.data);
         });
-        fetchContent(contentDataObjects);
-    };
-
-    const fetchContent = async (contentDataObjects) => {
-        const targetDirectory = locateTargetLocalDirectory();
-
-        await contentDataObjects.forEach(async contentDataObject => {
-            writeFileSync(
-                join(targetDirectory, contentDataObject.identifier),
-                await (await axios({ url: contentDataObject.url })).data
-            );
-        });
-    };
-
-    const locateTargetLocalDirectory = () => {
-        return join(context.siteDir, 'docs');
-    };
-
-    const getCompanyAndRepoFromUrl = (url) => {
-        const splitUrl = url.split('/');
-        return {
-            company: splitUrl[6],
-            repo: splitUrl[7]
-        };
     };
 
     /**
@@ -76,7 +55,8 @@ module.exports = (context, options) => {
     const generateSidebarFile = (siteDir, sidebarPath, sidebarItems) => {
         const sidebarFileContents = `
         module.exports = {
-            docs: ${JSON.stringify(sidebarItems, null, "    ")}
+            docs: 
+            ${JSON.stringify(sidebarItems, null, "    ")}
           };
         `;
 
@@ -92,5 +72,4 @@ module.exports = (context, options) => {
             return await getFileNames(sourceUrl);
         }
     };
-
 };
