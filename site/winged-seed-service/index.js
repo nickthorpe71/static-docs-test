@@ -5,14 +5,13 @@ const { exec } = require('child_process');
 
 const sourceUrl = 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/';
 const sidebarPath = 'sidebars.auto.js';
-// const siteDirectory = './site';
 const siteDirectory = String(__dirname).split('/').slice(0, -1).join('/');
 
 const run = async () => {
     const fileNames = await getFileNamesFromRepo();
     await generateDocsFiles(fileNames);
     await generateSidebarFile(fileNames);
-    npmRunBuild();
+    runNpmCommand('build', postBuild);
 };
 
 const getFileNamesFromRepo = async () => {
@@ -36,17 +35,26 @@ const generateSidebarFile = async (fileNames) => {
         "utf8");
 };
 
-const npmRunBuild = () => {
-    exec(` cd ${siteDirectory} npm run build`, (error, stdout, stderr) => {
-        if (error) {
+const postBuild = async (error, stdout, stderr) => {
+    if (error)
+        console.log(`error: ${error.message}`);
+
+    if (stderr)
+        console.log(`stderr: ${stderr}`);
+
+    runNpmCommand('serve');
+};
+
+const runNpmCommand = async (command, callback = undefined) => {
+    exec(`cd ${siteDirectory} & npm run-script ${command}`, (error, stdout, stderr) => {
+        if (error)
             console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
+
+        if (stderr)
             console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
+
+        if (callback)
+            callback();
     });
 };
 
