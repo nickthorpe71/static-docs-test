@@ -24,8 +24,6 @@ module.exports = (context, options) => {
     const pullFromRepo = async () => {
         const repoData = await axios.get(sourceUrl);
 
-        console.log(repoData);
-
         const fileNamesFromRepo = repoData.data.values.map(value => value.path);
         const filenamesNoExtension = fileNamesFromRepo.map(fileName => fileName.split('.')[0]);
         const splitUrl = sourceUrl.split('/');
@@ -50,7 +48,7 @@ module.exports = (context, options) => {
     };
 
     /**
-     * Creates a sidebar file that contains all sitebarItems passed in
+     * Creates a sidebar file that contains all sidebarItems passed in
      */
     const generateSidebarFile = async (sidebarItems) => {
         const sidebarFileContents =
