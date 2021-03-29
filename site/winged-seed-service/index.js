@@ -7,7 +7,7 @@ const sourceUrl = 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/s
 const sidebarPath = 'sidebars.auto.js';
 const siteDirectory = String(__dirname).split('/').slice(0, -1).join('/');
 
-const main = async () => {
+const runWingedSeed = async () => {
     const fileNames = await getFileNamesFromRepo();
     await generateDocsFiles(fileNames);
     await generateSidebarFile(fileNames);
@@ -60,4 +60,4 @@ const runGitCommand = (command, callback = undefined) => {
     });
 };
 
-main();
+module.exports = runWingedSeed();
