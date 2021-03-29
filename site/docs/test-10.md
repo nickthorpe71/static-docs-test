@@ -1,7 +1,7 @@
 ---
 title: test 10
 ---
-ADDED FOR TEST
+THIS IS A NEW EDIT IN TEST 10
 
 Congratulations on making it this far! ANOTHER TEST
 
