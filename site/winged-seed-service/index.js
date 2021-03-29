@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { join } = require("path");
-const { writeFileSync } = require("fs");
+const { writeFileSync, rmdir } = require("fs");
 const { exec } = require('child_process');
 
 const sourceUrl = 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/';
@@ -20,6 +20,8 @@ const getFileNamesFromRepo = async () => {
 };
 
 const generateDocsFiles = async (fileNames) => {
+    // remove all old files -- will need to be optimized to check which files should be removed
+    // await rmdir(siteDirectory + '/docs', { recursive: true });
     const splitUrl = sourceUrl.split('/');
     for (let i = 0; i < fileNames.length; i++) {
         const fetchContentResponse = await axios.get(`https://bitbucket.org/${splitUrl[6]}/${splitUrl[7]}/raw/HEAD/${fileNames[i]}`);
@@ -36,7 +38,6 @@ const generateSidebarFile = async (fileNames) => {
 };
 
 const postBuild = () => {
-    // push to core repo
     runGitCommand('add .', () => {
         runGitCommand('commit -m "automated commit"', () => {
             runGitCommand('push');
