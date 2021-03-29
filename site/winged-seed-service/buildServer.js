@@ -1,10 +1,11 @@
 const express = require('express');
-const runWingedSeed = require('./index');
+const wingedSeed = require('./index');
 const app = express();
 const port = 3001;
 
 app.post('/build', (req, res) => {
-    runWingedSeed();
+    wingedSeed();
+    console.log('passed');
     res.send('build triggered').status(200);
 });
 
