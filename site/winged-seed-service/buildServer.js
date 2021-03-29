@@ -5,8 +5,9 @@ const port = 3001;
 
 app.get('/build', (req, res) => {
     runWingedSeed();
+    res.send('build triggered').status(200);
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Build server listening at http://localhost:${port}`);
 });
