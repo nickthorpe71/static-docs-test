@@ -7,7 +7,7 @@ const sourceUrl = 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/s
 const sidebarPath = 'sidebars.auto.js';
 const siteDirectory = String(__dirname).split('/').slice(0, -1).join('/');
 
-const run = async () => {
+const main = async () => {
     const fileNames = await getFileNamesFromRepo();
     await generateDocsFiles(fileNames);
     await generateSidebarFile(fileNames);
@@ -35,27 +35,29 @@ const generateSidebarFile = async (fileNames) => {
         "utf8");
 };
 
-const postBuild = async (error, stdout, stderr) => {
-    if (error)
-        console.log(`error: ${error.message}`);
-
-    if (stderr)
-        console.log(`stderr: ${stderr}`);
-
-    runNpmCommand('serve');
-};
-
-const runNpmCommand = async (command, callback = undefined) => {
-    exec(`cd ${siteDirectory} & npm run-script ${command}`, (error, stdout, stderr) => {
-        if (error)
-            console.log(`error: ${error.message}`);
-
-        if (stderr)
-            console.log(`stderr: ${stderr}`);
-
-        if (callback)
-            callback();
+const postBuild = () => {
+    // push to core repo
+    runGitCommand('add .', () => {
+        runGitCommand('commit -m "automated commit"', () => {
+            runGitCommand('push');
+        });
     });
 };
 
-run();
+const runNpmCommand = (command, callback = undefined) => {
+    exec(`cd ${siteDirectory} & npm run-script ${command}`, (error, stdout, stderr) => {
+        if (error) console.log(`error: ${error.message}`);
+        if (stderr) console.log(`stderr: ${stderr}`);
+        if (callback) callback();
+    });
+};
+
+const runGitCommand = (command, callback = undefined) => {
+    exec(`cd ${siteDirectory} & git ${command}`, (error, stdout, stderr) => {
+        if (error) console.log(`error: ${error.message}`);
+        if (stderr) console.log(`stderr: ${stderr}`);
+        if (callback) callback();
+    });
+};
+
+main();
