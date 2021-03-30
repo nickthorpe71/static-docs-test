@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-    title: 'My Site',
+    title: 'Kauri',
     tagline: 'The tagline of my site',
     url: 'https://your-docusaurus-test-site.com',
     baseUrl: '/',
