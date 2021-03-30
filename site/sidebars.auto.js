@@ -5,6 +5,5 @@ module.exports = {docs: [
     "test-6",
     "test-7",
     "test-8",
-    "test-9",
     "test"
 ]};

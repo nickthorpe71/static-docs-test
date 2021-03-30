@@ -20,8 +20,7 @@ const getFileNamesFromRepo = async () => {
 };
 
 const generateDocsFiles = async (fileNames) => {
-    removeOldDocs();
-    console.log('removal complete');
+    checkForRemoval(fileNames);
     const splitUrl = sourceUrl.split('/');
     for (let i = 0; i < fileNames.length; i++) {
         const fetchContentResponse = await axios.get(`https://bitbucket.org/${splitUrl[6]}/${splitUrl[7]}/raw/HEAD/${fileNames[i]}`);
@@ -29,11 +28,15 @@ const generateDocsFiles = async (fileNames) => {
     }
 };
 
-const removeOldDocs = () => {
+const checkForRemoval = (fileNames) => {
     const path = siteDirectory + '/docs';
     readdir(path, (error, files) => {
+        if (error)
+            console.warn(error);
+
         files.forEach(file => {
-            rmdir(path + '/' + file, { recursive: true }, () => { console.log('removed'); });
+            if (!fileNames.includes(file))
+                rmdir(path + '/' + file, { recursive: true }, () => { });
         });
     });
 };
