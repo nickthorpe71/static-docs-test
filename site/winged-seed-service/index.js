@@ -20,13 +20,17 @@ const getFileNamesFromRepo = async () => {
 };
 
 const generateDocsFiles = async (fileNames) => {
-    // remove all old files -- will need to be optimized to check which files should be removed
-    rmdir(siteDirectory + '/docs', { recursive: true }, () => { console.log('removed'); });
     const splitUrl = sourceUrl.split('/');
     for (let i = 0; i < fileNames.length; i++) {
         const fetchContentResponse = await axios.get(`https://bitbucket.org/${splitUrl[6]}/${splitUrl[7]}/raw/HEAD/${fileNames[i]}`);
         writeFileSync(join(siteDirectory, 'docs', fileNames[i]), fetchContentResponse.data);
     }
+};
+
+const removeOldDocs = () => {
+    fs.readdir(siteDirectory + '/docs', (error, files) => {
+        // rmdir(siteDirectory + '/docs', { recursive: true }, () => { console.log('removed'); });
+    });
 };
 
 const generateSidebarFile = async (fileNames) => {
