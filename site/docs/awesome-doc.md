@@ -1,5 +1,0 @@
----
-title: AWESOME DOC
----
-
-AWESOME DOC
