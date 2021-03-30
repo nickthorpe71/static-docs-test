@@ -32,7 +32,7 @@ const removeOldDocs = () => {
     const path = siteDirectory + '/docs';
     readdir(path, (error, files) => {
         files.forEach(file => {
-            rmdir(path + file, { recursive: true }, () => { console.log('removed'); });
+            rmdir(path + '/' + file, { recursive: true }, () => { console.log('removed'); });
         });
     });
 };
