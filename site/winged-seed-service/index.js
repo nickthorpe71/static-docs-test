@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { join } = require("path");
-const { writeFileSync, rmdir } = require("fs");
+const { writeFileSync, rmdir, readdir } = require("fs");
 const { exec } = require('child_process');
 
 const sourceUrl = 'https://bitbucket.org/!api/2.0/repositories/Ironskin/test-2/src/master/';
@@ -20,6 +20,7 @@ const getFileNamesFromRepo = async () => {
 };
 
 const generateDocsFiles = async (fileNames) => {
+    removeOldDocs();
     const splitUrl = sourceUrl.split('/');
     for (let i = 0; i < fileNames.length; i++) {
         const fetchContentResponse = await axios.get(`https://bitbucket.org/${splitUrl[6]}/${splitUrl[7]}/raw/HEAD/${fileNames[i]}`);
@@ -28,8 +29,11 @@ const generateDocsFiles = async (fileNames) => {
 };
 
 const removeOldDocs = () => {
-    fs.readdir(siteDirectory + '/docs', (error, files) => {
-        // rmdir(siteDirectory + '/docs', { recursive: true }, () => { console.log('removed'); });
+    const path = siteDirectory + '/docs';
+    readdir(path, (error, files) => {
+        files.forEach(file => {
+            rmdir(path + file, { recursive: true }, () => { console.log('removed'); });
+        });
     });
 };
 
