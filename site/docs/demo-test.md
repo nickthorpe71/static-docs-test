@@ -1,5 +1,0 @@
----
-title: DEMO
----
-
-TEST CONTENT
