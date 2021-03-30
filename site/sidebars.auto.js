@@ -1,3 +1,5 @@
 module.exports = {docs: [
-    "getting-started"
+    "admonitions",
+    "getting-started",
+    "style-guide"
 ]};
