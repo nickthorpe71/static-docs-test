@@ -1,8 +1,9 @@
 ---
-title: test 6
+title: test 10
 ---
+THIS IS A NEW EDIT IN TEST 10
 
-Congratulations on making it this far!
+Congratulations on making it this far! ANOTHER TEST
 
 You have learned the **basics of Docusaurus** and made some changes to the **initial template**.
 
