@@ -5,6 +5,7 @@ const port = 3001;
 
 app.post('/build', (req, res) => {
     wingedSeed();
+    console.log('build triggered');
     res.send('build triggered').status(200);
 });
 
